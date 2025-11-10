@@ -5,6 +5,9 @@ public class Jump implements ICommand {
     private final boolean executed = false;
 
     
+    public Jump(Player player2, int i) {
+        //TODO Auto-generated constructor stub
+    }
     @Override
     public void execute() {
         

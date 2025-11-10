@@ -1,33 +1,41 @@
-public class Player {
-    private Color baseColor;
-    private int spriteW;
-    private int spriteH;
-    private int x;      // X position on screen (starts from left)
-    private int vx;     // X velocity (instant movement) 
-    private int y;      // Y position (height above ground, 0 is ground)
-    private boolean onGround;    // True if player is on the ground
-    private int attackCooldown;  // attack cooldown (frames)
-    private Color auraColor;     // attack aura color
-    private int auraTicks;       // aura remaining duration (frames)
-    private String bubbleText;   // bubbleText near Player
-    private int bubbleTicks;     // remaining display time (frames)
+import java.awt.Color;
 
-    public Player() {
-        baseColor = new Color(60, 140, 255);
-        spriteW = 50;
-        spriteH = 60;
-        x = 80;
-        vx = 0;
-        y = 0;
-        onGround = true;
-        attackCooldown = 0;
-        auraColor = null;
-        auraTicks = 0;
-        bubbleText = null;
-        bubbleTicks = 0;
+
+public class Player {
+    int x = 80;     // X position on screen (starts from left)
+    int y = 0;      // Y position (height above ground, 0 is ground)
+    boolean onGround = true; // True if player is on the ground
+
+    int vx = 0;     // X velocity (instant movement)
+    int attackCooldown = 0; // ticks
+
+    int spriteW = 50;
+    int spriteH = 60;
+    Color baseColor = new Color(60, 140, 255);
+
+    Color auraColor = null;  // Aura
+    int auraTicks = 0;       // Number of frames to maintain aura
+
+    String bubbleText = null; // bubbleText nearby Player
+    int bubbleTicks = 0;
+
+    // For every frame: gravity/attack cool down
+    void tickPhysics() {
+        // simple gravity: If in the air, decrease y by 1 and move to the ground
+        if (!onGround) {
+            y = Math.max(0, y - 1);
+            if (y == 0) onGround = true;
+        }
+        if (attackCooldown > 0) attackCooldown--;
+
+        // Aura lifespan decrease
+        if (auraTicks > 0 && --auraTicks == 0) {
+            auraColor = null;
+        }
+
+        // bubbleText
+        if (bubbleTicks > 0) bubbleTicks--;
     }
-    
-    public void move(int dx) {
-        x += dx;
-    }
+
+
 }
